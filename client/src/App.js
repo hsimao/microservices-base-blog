@@ -5,7 +5,6 @@ import axios from "axios";
 
 function App() {
   const [posts, setPosts] = useState([]);
-
   const fetchPosts = useCallback(async () => {
     const res = await axios.get("http://localhost:4000/posts");
     setPosts(Object.values(res.data));
@@ -32,13 +31,20 @@ function App() {
     });
   });
 
+  const fetchComments = useCallback((postId) => {
+    return axios.get(`http://localhost:4001/posts/${postId}/comments`);
+  });
   return (
     <div className="container">
       <h1>Create Post</h1>
       <PostCreate createPost={createPost} />
       <hr />
       <h1>Posts</h1>
-      <PostList posts={posts} createComment={createComment} />
+      <PostList
+        posts={posts}
+        createComment={createComment}
+        fetchComments={fetchComments}
+      />
     </div>
   );
 }
