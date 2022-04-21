@@ -1,4 +1,6 @@
-function PostList({ posts }) {
+import CommentCreate from "./CommentCreate";
+
+function PostList({ posts, createComment }) {
   const renderPosts = posts.map((post) => {
     return (
       <div
@@ -9,6 +11,7 @@ function PostList({ posts }) {
         <div className="card-body">
           <h3>{post.title}</h3>
         </div>
+        <CommentCreate postId={post.id} createComment={createComment} />
       </div>
     );
   });

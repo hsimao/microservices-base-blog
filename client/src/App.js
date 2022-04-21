@@ -25,13 +25,20 @@ function App() {
     fetchPosts();
   }, [fetchPosts]);
 
+  const createComment = useCallback(async (commentData) => {
+    const { postId, content } = commentData;
+    await axios.post(`http://localhost:4001/posts/${postId}/comments`, {
+      content
+    });
+  });
+
   return (
     <div className="container">
       <h1>Create Post</h1>
       <PostCreate createPost={createPost} />
       <hr />
       <h1>Posts</h1>
-      <PostList posts={posts} />
+      <PostList posts={posts} createComment={createComment} />
     </div>
   );
 }
