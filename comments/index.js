@@ -23,10 +23,12 @@ app.post("/posts/:id/comments", async (req, res) => {
   const postId = req.params.id;
   const comments = commentsByPostId[postId] || [];
 
-  comments.push({
+  const newComment = {
     id: commentId,
     content
-  });
+  };
+
+  comments.push(newComment);
 
   commentsByPostId[postId] = comments;
 
@@ -35,7 +37,7 @@ app.post("/posts/:id/comments", async (req, res) => {
     data: { id: commentId, content, postId }
   });
 
-  res.status(201).send(comments);
+  res.status(201).send(newComment);
 });
 
 app.post("/events", (req, res) => {

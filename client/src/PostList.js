@@ -1,7 +1,7 @@
 import CommentCreate from "./CommentCreate";
 import CommentList from "./CommentList";
 
-function PostList({ posts, createComment, fetchComments }) {
+function PostList({ posts, createComment }) {
   const renderPosts = posts.map((post) => {
     return (
       <div
@@ -12,7 +12,7 @@ function PostList({ posts, createComment, fetchComments }) {
         <div className="card-body">
           <h3>{post.title}</h3>
         </div>
-        <CommentList postId={post.id} fetchComments={fetchComments} />
+        <CommentList comments={post.comments} />
         <CommentCreate postId={post.id} createComment={createComment} />
       </div>
     );
