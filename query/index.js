@@ -24,12 +24,14 @@ app.post("/events", (req, res) => {
   const { type, data } = req.body;
 
   switch (type) {
-    case "PostCreate":
-      posts[id] = { id: data.id, title: data.title, comments: [] };
+    case "PostCreated":
+      const { id, title } = data;
+      posts[id] = { id: id, title: title, comments: [] };
       break;
     case "CommentCreated":
-      const post = posts[data.postId];
-      post.comments.push({ id: data.id, content: data.content });
+      const { id: commentId, content, postId } = data;
+      const post = posts[postId];
+      post.comments.push({ id: commentId, content });
       break;
     default:
   }
