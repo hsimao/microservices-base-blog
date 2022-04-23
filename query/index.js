@@ -1,4 +1,5 @@
 const express = require("express");
+const axios = require("axios");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
@@ -16,13 +17,12 @@ app.use(cors());
 }; */
 const posts = {};
 
-app.get("/posts", (req, res) => {
-  res.send(posts);
-});
+const handleQueryInit = async () => {
+  const res = await axios.get("http://localhost:4005/events");
+  res.data.forEach(({ type, data }) => handleEvent({ type, data }));
+};
 
-app.post("/events", (req, res) => {
-  const { type, data } = req.body;
-
+const handleEvent = ({ type, data }) => {
   const handlePostCreated = (data) => {
     const { id, title } = data;
     posts[id] = { id: id, title: title, comments: [] };
@@ -54,10 +54,19 @@ app.post("/events", (req, res) => {
       break;
     default:
   }
+};
 
+app.get("/posts", (req, res) => {
+  res.send(posts);
+});
+
+app.post("/events", (req, res) => {
+  const { type, data } = req.body;
+  handleEvent({ type, data });
   res.send({});
 });
 
 app.listen(4002, () => {
   console.log("Query Listening on 4002");
+  handleQueryInit();
 });
