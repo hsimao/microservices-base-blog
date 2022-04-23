@@ -37,9 +37,9 @@ function App() {
     );
 
     setPosts((posts) => {
-      const { id: commentId, content } = res.data;
+      const { id: commentId, content, status } = res.data;
       const targetPost = posts[postId];
-      targetPost.comments.push({ id: commentId, content });
+      targetPost.comments.push({ id: commentId, content, status });
       return { ...posts };
     });
   }, []);
