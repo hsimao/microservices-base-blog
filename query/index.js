@@ -10,7 +10,7 @@ app.use(cors());
   "id-1234": {
     id: "id-1234",
     title: "title",
-    comments: [{ id: "123", content: "content" }]
+    comments: [{ id: "123", content: "content", status: "pending" }]
   },
   ...
 }; */
@@ -23,15 +23,34 @@ app.get("/posts", (req, res) => {
 app.post("/events", (req, res) => {
   const { type, data } = req.body;
 
+  const handlePostCreated = (data) => {
+    const { id, title } = data;
+    posts[id] = { id: id, title: title, comments: [] };
+  };
+
+  const handleCommentCreated = (data) => {
+    const { id: commentId, content, postId, status } = data;
+    const post = posts[postId];
+    post.comments.push({ id: commentId, content, status });
+  };
+
+  const handleCommentUpdated = (data) => {
+    const { id, content, postId, status } = data;
+    const post = posts[postId];
+    const comment = post.comments.find((comment) => comment.id === id);
+    comment.status = status;
+    comment.content = content;
+  };
+
   switch (type) {
     case "PostCreated":
-      const { id, title } = data;
-      posts[id] = { id: id, title: title, comments: [] };
+      handlePostCreated(data);
       break;
     case "CommentCreated":
-      const { id: commentId, content, postId } = data;
-      const post = posts[postId];
-      post.comments.push({ id: commentId, content });
+      handleCommentCreated(data);
+      break;
+    case "CommentUpdated":
+      handleCommentUpdated(data);
       break;
     default:
   }
