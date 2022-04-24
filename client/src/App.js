@@ -11,7 +11,7 @@ function App() {
   }, []);
 
   const createPost = useCallback(async (title) => {
-    const res = await axios.post("http://posts.com/posts", {
+    const res = await axios.post("http://posts.com/posts/create", {
       title
     });
 
