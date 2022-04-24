@@ -6,12 +6,12 @@ import axios from "axios";
 function App() {
   const [posts, setPosts] = useState({});
   const fetchPosts = useCallback(async () => {
-    const res = await axios.get("http://localhost:4002/posts");
+    const res = await axios.get("http://posts.com/posts");
     setPosts(res.data);
   }, []);
 
   const createPost = useCallback(async (title) => {
-    const res = await axios.post("http://localhost:4000/posts", {
+    const res = await axios.post("http://posts.com/posts", {
       title
     });
 
@@ -29,12 +29,9 @@ function App() {
 
   const createComment = useCallback(async (commentData) => {
     const { postId, content } = commentData;
-    const res = await axios.post(
-      `http://localhost:4001/posts/${postId}/comments`,
-      {
-        content
-      }
-    );
+    const res = await axios.post(`http://posts.com/posts/${postId}/comments`, {
+      content
+    });
 
     setPosts((posts) => {
       const { id: commentId, content, status } = res.data;
