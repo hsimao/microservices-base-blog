@@ -18,7 +18,7 @@ app.use(cors());
 const posts = {};
 
 const handleQueryInit = async () => {
-  const res = await axios.get("http://localhost:4005/events");
+  const res = await axios.get("http://event-bus-srv:4005/events");
   res.data.forEach(({ type, data }) => handleEvent({ type, data }));
 };
 
@@ -62,6 +62,7 @@ app.get("/posts", (req, res) => {
 
 app.post("/events", (req, res) => {
   const { type, data } = req.body;
+  console.log("query 接收 event ", type);
   handleEvent({ type, data });
   res.send({});
 });
