@@ -20,7 +20,8 @@ app.post("/posts", async (req, res) => {
 
   posts[id] = {
     id,
-    title
+    title,
+    comments: []
   };
 
   await axios.post("http://event-bus-srv:4005/events", {
